@@ -27,7 +27,7 @@
 | flag: Europe PMC records without a PMID, never screened = 79 | PASS | 79 |
 | flag: release flag counts + flags outside the release scope = workbook counts | PASS |  |
 | flag: unit_conflict_benchmark = benchmark_unit_fault.csv (10 curated test records on 3 papers, all in the workbook) | PASS | 10 in the workbook, 10 in the release |
-| flag: flag names are the six allowed names | PASS | {'surrogate_untagged', 'possible_duplicate', 'origin_unresolved', 'in_vivo_with_ic50', 'value_to_check', 'unit_conflict_benchmark'} |
+| flag: flag names are the six allowed names | PASS | {'value_to_check', 'possible_duplicate', 'origin_unresolved', 'surrogate_untagged', 'in_vivo_with_ic50', 'unit_conflict_benchmark'} |
 | flag: flagged column counts in the records table equal the recomputed release counts | PASS | {'value_to_check': 189, 'origin_unresolved': 44, 'in_vivo_with_ic50': 0, 'surrogate_untagged': 120, 'possible_duplicate': 27, 'unit_conflict_benchmark': 10} |
 | sqlite table records = CSV rows | PASS | 1731 vs 1731 |
 | sqlite table papers = CSV rows | PASS | 553 vs 553 |

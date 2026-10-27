@@ -188,7 +188,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def download(table: str | None = Query(None), con=Depends(db)):
         """CSV of one release table (UTF-8 with BOM, like the release files). Disabled unless AVPCD_ENABLE_DOWNLOAD=true."""
         if not settings.enable_download:
-            raise HTTPException(403, "downloads are disabled on this server (the licence plan of the release is not confirmed)")
+            raise HTTPException(403, "downloads are disabled on this server (switched off by the operator)")
         if table is None:
             return {"tables": release.tables, "format": "csv", "usage": "/api/download?table=records"}
         if table not in release.tables:  # whitelist: the table name is interpolated below

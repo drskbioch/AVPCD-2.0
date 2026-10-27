@@ -1,11 +1,18 @@
       <h1>Citation</h1>
-      <div class="notice"><strong>There is nothing to cite yet.</strong> Release <span data-stat="meta.version">0.1-draft</span> is a draft: its accuracy is known only as a range from a 150-record benchmark, the authors and licence are not set, and there is no DOI, repository or paper.</div>
-      <p>When the benchmark has been done and the release is confirmed, this page will give the citation text, a BibTeX entry and the DOI of the archived release.</p>
-      <h2>What is missing</h2>
+      <p>If you use these records, please cite the release and state its version (<span data-stat="meta.version">0.1</span>). The records are licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>, which requires attribution.</p>
+      <h2>Citation text</h2>
+      <pre class="cite">AVPCD project (2026). AVPCD 2.0: curated antiviral potency records of plant-derived compounds, version 0.1 [Data set]. Licence CC BY 4.0.</pre>
+      <h2>BibTeX</h2>
+      <pre class="cite">@misc{avpcd_2026,
+  author    = {{AVPCD project}},
+  title     = {{AVPCD 2.0: curated antiviral potency records of plant-derived compounds}},
+  year      = {2026},
+  note      = {Data set, version 0.1, licence CC BY 4.0}
+}</pre>
+      <h2>Please also</h2>
       <ul>
-        <li>Authors and their order.</li>
-        <li>A licence for the records. A proposal exists (CC BY 4.0 for the curated records and derived columns); it is not confirmed.</li>
-        <li>A public repository and an archived copy with a DOI.</li>
-        <li>The publication that describes the database.</li>
+        <li>Quote accuracy as the range given on the <a href="about.html">About</a> page, not as a single figure.</li>
+        <li>State the evidence tier when you use a value (full text, abstract or unclear) and leave out records carrying the flag <code>unit_conflict_benchmark</code> unless you have re-read the paper.</li>
+        <li>Cite the original papers (PMID and DOI are in every record) when you rely on a particular value.</li>
       </ul>
-      <p>Until then, please do not quote counts or values from this site in other work. If you need to refer to the project, use its name and say that the data are a draft.</p>
+      <p>A machine-readable form is in the release as <code>CITATION.cff</code>.</p>

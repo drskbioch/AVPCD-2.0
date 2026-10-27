@@ -124,7 +124,7 @@ def test_download_gate_and_content(client, truth):
     assert r.content.startswith(b"\xef\xbb\xbf")
     assert len(r.text.strip().splitlines()) == 1 + truth.execute("SELECT COUNT(*) FROM waterfall").fetchone()[0]
     assert client.get("/api/download", params={"table": "sqlite_master"}).status_code == 404
-    off = make_client()  # default: downloads disabled
+    off = make_client(enable_download=False)
     assert off.get("/api/download", params={"table": "records"}).status_code == 403
 
 

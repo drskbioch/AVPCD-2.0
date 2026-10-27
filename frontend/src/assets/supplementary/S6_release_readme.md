@@ -1,6 +1,6 @@
-# AVPCD release v0.1 (DRAFT, accuracy measured as a range)
+# AVPCD release v0.1 (accuracy measured as a range)
 
-**Status: DRAFT 2026-10-26.** The records are *curated*. Accuracy was measured on a 150-record benchmark sample (105 papers, 8 strata of a 1,763-record frame) read by two independent field experts; no third reader decided where they disagreed. The result is therefore a range: 95.7% to 99.2% of the checked fields are correct (95% interval 93.4% to 99.9%), and 78.6% to 96.9% of the records have every checked field correct (95% interval 68.2% to 99.5%); stratified to the frame. The 90% record-level target of the plan can therefore be neither confirmed nor rejected from these data. Recall and the accuracy of compound-name resolution (on which the novelty status depends) were not measured. Method and results: `methods/benchmark_report.md`. Records outside the sample have not been checked by an independent person, and no record is marked as checked.
+**Release 0.1, 2026-10-28.** The records are *curated*. Accuracy was measured on a 150-record benchmark sample (105 papers, 8 strata of a 1,763-record frame) read by two independent field experts; no third reader decided where they disagreed. The result is therefore a range: 95.7% to 99.2% of the checked fields are correct (95% interval 93.4% to 99.9%), and 78.6% to 96.9% of the records have every checked field correct (95% interval 68.2% to 99.5%); stratified to the frame. The 90% record-level target of the plan can therefore be neither confirmed nor rejected from these data. Recall and the accuracy of compound-name resolution (on which the novelty status depends) were not measured. Method and results: `methods/benchmark_report.md`. Records outside the sample have not been checked by an independent person, and no record is marked as checked.
 The column `method_as_recorded` reproduces the curation method string exactly as it stands in the curation workbook; it describes how a record was
 produced and is not evidence of independent checking.
 
@@ -25,11 +25,13 @@ NCBI Taxonomy id and family; ICTV species and family; molar values); the novelty
 No NPASS or ChEMBL value (only NPASS compound ids and PMIDs, ChEMBL molecule and document ids); no abstract and no full text of any paper; no annotator files;
 no curator identifiers; no record outside the headline scope (they stay in the curation workbook); no hand-checked structure.
 
-## Licence plan (a proposal for the project lead to confirm; nothing here is legal advice)
-Proposed: our curated records and derived columns under CC BY 4.0. Third-party material is used as follows: PubChem and NCBI data are public; COCONUT 2.0 and LOTUS are CC0;
+## Licence
+The curated records and derived columns are released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0, https://creativecommons.org/licenses/by/4.0/); please attribute the release as in "Citation" below.
+Third-party material is used as follows: PubChem and NCBI data are public; COCONUT 2.0 and LOTUS are CC0;
 NPASS is CC BY-NC, so only its ids and PMIDs appear; ChEMBL is CC BY-SA 3.0, so only its ids appear; the ICTV species list and the paper metadata are cited, not redistributed in bulk.
-**Open before any release:** the licence status of the text processing for papers outside licence tier A. 1,168 of the 1,731 records come from papers that are not CC BY / CC0 open access
-(the curation workbook rules allow AI-assisted checking only for tier A); the project lead has to confirm how these were produced before the package is shared.
+The release holds extracted values and identifiers only, no abstract and no full text of any paper.
+**Provenance of the text processing.** 1,168 of the 1,731 records come from papers that are not CC BY / CC0 open access. The curation workbook rules allowed AI-assisted checking of full text only for CC BY / CC0 papers;
+for the other papers the curators report that the AI tool received the abstract only and that they read the full text themselves (curator-reported, not independently verified).
 
 ## Known limits
 - **Accuracy is a range, not a single figure.** Records with every checked field correct: 78.6% to 96.9%; fields: 95.7% to 99.2% (stratified to the 1,763-record frame, 95% intervals in `methods/benchmark_report.md`). Of the 150 sampled records, 83 were confirmed by both experts on every checked field, 43 were supported by one expert, 15 remain unresolved between the two experts and 9 were contradicted. For the records the novelty tables list as newly curated, the record-level range is 74.2% to 95.6%. Not measured: recall, compound-name resolution, records outside the frame.
@@ -59,4 +61,4 @@ A flag marks a possible problem. It does not say that the recorded value is wron
 - The kept record of the confirmed duplicate group is in this release and carries `possible_duplicate`; its two extra copies are outside the scope (see `waterfall.csv`).
 
 ## Citation
-See `CITATION.cff` (placeholder). Version 0.1-draft, 2026-10-26.
+AVPCD project (2026). AVPCD 2.0: curated antiviral potency records of plant-derived compounds, version 0.1 [Data set]. Licence CC BY 4.0. Machine-readable form: `CITATION.cff`.

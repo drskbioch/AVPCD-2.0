@@ -31,7 +31,7 @@ const pages = readdirSync(dist).filter((f) => f.endsWith(".html"));
 check("10 pages built", pages.length === 10, String(pages.length));
 for (const f of pages) {
   const html = readFileSync(join(dist, f), "utf8");
-  check(`${f}: draft banner text`, html.includes("DRAFT v0.1 - accuracy known only as a range - not for citation"));
+  check(`${f}: no draft / not-ready wording`, !/draft|not for citation|not ready|not yet measured|nothing to cite/i.test(html));
   check(`${f}: Contact opens http://habdsk.org/ in a new tab`, /href="http:\/\/habdsk\.org\/" target="_blank" rel="noopener noreferrer"/.test(html));
   check(`${f}: no unreplaced {{placeholder}}`, !/\{\{\w+\}\}/.test(html));
   check(`${f}: one h1`, (html.match(/<h1[ >]/g) || []).length === 1, String((html.match(/<h1[ >]/g) || []).length));
@@ -52,7 +52,7 @@ for (const f of ["S1_data_dictionary.csv", "S2_scope_waterfall.csv", "S3_scope_w
   check("about: the benchmark range typed on the page equals the S6 README", ["95.7%", "99.2%", "78.6%", "96.9%"].every((n) => about.includes(n) && s6.includes(n)));
   check("no page still says accuracy was not measured", !readdirSync(dist).filter((f) => f.endsWith(".html")).some((f) => /accuracy (has|is) (not|unmeasured)|not yet measured|has not been measured/i.test(readFileSync(join(dist, f), "utf8"))));
 }
-check("robots.txt disallows all", /Disallow: \//.test(readFileSync(join(dist, "robots.txt"), "utf8")));
+check("robots.txt allows indexing", /Allow: \/\s*$/m.test(readFileSync(join(dist, "robots.txt"), "utf8")));
 
 // ---- part 2: rendered ----
 function render(path, extra = []) {

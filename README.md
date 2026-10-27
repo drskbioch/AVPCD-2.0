@@ -1,6 +1,6 @@
-# avpcd_web: web app skeleton for AVPCD release v0.1 (draft)
+# avpcd_web: web app for AVPCD release v0.1
 
-Status: **ready to deploy (see DEPLOY_VERCEL.md); not yet deployed.** Nothing is pushed, and there are no secrets in these files (the API needs none). The data is release v0.1-draft; its accuracy has not been measured, and its licence plan is not confirmed (`analysis/phase6/release_v0.1/README.md`).
+Status: ready to deploy (see DEPLOY_VERCEL.md). There are no secrets in these files (the API needs none). The data is release 0.1, licensed CC BY 4.0; its accuracy is reported as a range (release README).
 
 ## The split
 
@@ -67,7 +67,7 @@ node tests/smoke.mjs                  # with the backend and serve.mjs running; 
 | `GET /api/records` | filtered, sorted, paginated records (compound, inchikey, plant, virus, endpoint, value range, tier, flags) |
 | `GET /api/record/{id}` | one record (all 65 columns) plus its paper row |
 | `GET /api/stats` | counts for the release (tiers, endpoints, flags, ...) |
-| `GET /api/download` | CSV of a release table; **off by default** (`AVPCD_ENABLE_DOWNLOAD=false`) until the licence is confirmed |
+| `GET /api/download` | CSV of a release table; on by default (CC BY 4.0); `AVPCD_ENABLE_DOWNLOAD=false` switches it off |
 | `GET /api/facets/{virus\|plant\|compound\|endpoint}` | record counts behind the browse pages |
 | `GET /api/dictionary` | the release data dictionary |
 | `GET /api/health` | liveness check |

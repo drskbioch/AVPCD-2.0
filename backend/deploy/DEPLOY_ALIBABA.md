@@ -5,7 +5,7 @@ Nothing here has been run on a server. It is a checklist for the person who will
 ## Before you start
 
 1. **Region and domain.** In a mainland China region, serving a domain on ports 80/443 needs an ICP filing, which takes time; a Hong Kong or other overseas region does not. Decide this first. The frontend (Vercel) will call the API from visitors' browsers, so the API needs an **https** address with a valid certificate (a mixed-content block otherwise).
-2. **Licence.** Release v0.1 is a draft and its licence plan is not confirmed (release README). The API ships with downloads switched off (`AVPCD_ENABLE_DOWNLOAD=false`). Do not make the API public before the project lead has confirmed what may be shown.
+2. **Licence.** The records are CC BY 4.0 (release README), so the API may be public. Downloads are on by default; set `AVPCD_ENABLE_DOWNLOAD=false` to switch them off.
 3. **Security group.** Open inbound 80 and 443 (and 22 from your own address only). Do **not** open 8000: the API listens on localhost behind nginx.
 
 ## Steps (Docker route)

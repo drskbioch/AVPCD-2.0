@@ -7,11 +7,11 @@ Two Vercel projects from one GitHub repository. The browser loads the site from 
 | `avpcd-api` (backend) | `backend` | Other (Vercel detects Python from `requirements.txt` and `api/index.py`) | `AVPCD_CORS_ORIGINS` = the frontend's production URL, no trailing slash |
 | `avpcd-web` (frontend) | `frontend` | Other (`vercel.json` sets build command `node build.mjs` and output `dist`) | `AVPCD_API_URL` = the backend's production URL (https) |
 
-The release database `backend/data/avpcd_v0.1.sqlite3` (2.3 MB) is committed to this repository and bundled into the function (`includeFiles` in `backend/vercel.json`). It is opened read-only. Downloads (`/api/download`) stay off unless `AVPCD_ENABLE_DOWNLOAD=true` is set.
+The release database `backend/data/avpcd_v0.1.sqlite3` (2.3 MB) is committed to this repository and bundled into the function (`includeFiles` in `backend/vercel.json`). It is opened read-only. Downloads (`/api/download`) are on; set `AVPCD_ENABLE_DOWNLOAD=false` to switch them off.
 
 ## One-time steps
 
-1. **GitHub:** create an empty **private** repository, then from this folder:
+1. **GitHub:** create an empty **private** repository (or public, as you prefer), then from this folder:
    ```sh
    git remote add origin https://github.com/<account>/<repo>.git
    git push -u origin main
@@ -23,12 +23,9 @@ The release database `backend/data/avpcd_v0.1.sqlite3` (2.3 MB) is committed to 
 
 Project names decide the `.vercel.app` addresses; if a name is taken Vercel adds a suffix. Use the real URLs in steps 3 and 4.
 
-## Visibility: read before step 2
+## Visibility
 
-A private GitHub repository does **not** make the Vercel sites private. A production `*.vercel.app` address is reachable by anyone who has the link, and the API serves all 1,731 records. The release licence is not confirmed (release README), so either:
-
-- turn on Vercel Deployment Protection for both projects (Project Settings > Deployment Protection) while testing; the frontend then works only for people logged in to Vercel in the same browser, and the API call from the page may be blocked, so this is for the owner's own checks; or
-- deploy knowing the data is public, with the draft banner and downloads off.
+The records are licensed CC BY 4.0, so the sites are meant to be public. A private GitHub repository is fine for the source, but a production `*.vercel.app` address is reachable by anyone with the link. Vercel Deployment Protection (Project Settings) would block ordinary visitors; leave it off for the production deployment.
 
 ## Updating the data
 

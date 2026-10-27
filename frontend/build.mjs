@@ -11,7 +11,7 @@ const dist = join(root, "dist");
 
 // file, title, nav key (null = no navbar item), page script (js/<name>.js or null), description
 export const PAGES = [
-  ["index.html", "Home", "home", null, "Antiviral potency records of plant-derived compounds (draft release)."],
+  ["index.html", "Home", "home", null, "Antiviral potency records of plant-derived compounds (CC BY 4.0)."],
   ["browse.html", "Browse", "browse", "browse", "Browse the records by virus, plant, compound or endpoint."],
   ["search.html", "Search", "search", "search", "Search the records by compound, plant, virus, endpoint, value and more."],
   ["stats.html", "Statistics", "stats", "stats", "Counts for the current release."],
@@ -19,7 +19,7 @@ export const PAGES = [
   ["about.html", "About", "about", null, "What the records are and how they were made."],
   ["record.html", "Record", "browse", "record", "One record of the release."],
   ["dictionary.html", "Data dictionary", null, "dictionary", "Every column of the release records."],
-  ["citation.html", "Citation", null, null, "How to cite the release (not yet available)."],
+  ["citation.html", "Citation", null, null, "How to cite the release."],
   ["history.html", "Version history", null, null, "Changes between releases."],
 ];
 const NAV = [["home", "Home", "index.html"], ["browse", "Browse", "browse.html"], ["search", "Search", "search.html"],
@@ -77,5 +77,5 @@ for (const page of PAGES) {
 }
 for (const dir of ["css", "js", "assets"]) cpSync(join(src, dir), join(dist, dir), { recursive: true });
 writeFileSync(join(dist, "config.js"), `window.AVPCD_API_URL = ${JSON.stringify(api)};\n`);
-writeFileSync(join(dist, "robots.txt"), "User-agent: *\nDisallow: /\n"); // draft release: not for indexing
+writeFileSync(join(dist, "robots.txt"), "User-agent: *\nAllow: /\n");
 console.log(`built dist/ (${PAGES.length} pages; API: ${api})`);
