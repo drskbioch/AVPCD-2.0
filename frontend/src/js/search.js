@@ -1,5 +1,5 @@
 import { getJSON, getStats, el, fmtInt, fmtNanomolar, setStatus } from "./api.js";
-import { prettyValue, bucketLabel, flagLabel, flagHint } from "./labels.js";
+import { bucketLabel } from "./labels.js";
 
 const form = document.getElementById("filters");
 const statusBox = document.getElementById("status");
@@ -16,8 +16,6 @@ const COLUMNS = [
   ["Endpoint", "endpoint", "endpoint"],
   ["Value as printed", "value_raw", null],
   ["Value (nM)", "value_nM", "value_nM"],
-  ["Where read", "evidence_tier", "evidence_tier"],
-  ["Data quality flags", "data_quality_flags", null],
 ];
 
 function currentParams() {
@@ -66,12 +64,7 @@ function cell(column, row) {
   else if (column === "value_nM") { td.className = "num"; td.textContent = fmtNanomolar(v) || "–"; }
   else if (column === "plant_species" && v === "unspecified") { td.className = "dim"; td.textContent = "Not specified"; }
   else if (column === "value_raw") { td.className = "num"; td.textContent = [row.relation !== "=" ? row.relation : "", v, row.unit_raw].filter(Boolean).join(" "); }
-  else if (column === "evidence_tier") td.append(el("span", { class: `tag ${v}` }, prettyValue("evidence_tier", v)));
-  else if (column === "data_quality_flags") {
-    const names = v.split(";").filter(Boolean);
-    if (names.length) td.append(...names.map((n) => el("span", { class: "flag", title: flagHint(n) }, flagLabel(n))));
-    else td.append(el("span", { class: "noflag" }, "–"));
-  } else td.textContent = v;
+  else td.textContent = v;
   return td;
 }
 
