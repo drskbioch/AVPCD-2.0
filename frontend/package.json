@@ -1,0 +1,12 @@
+{
+  "name": "avpcd-web-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Static frontend for the AVPCD API (no framework, no dependencies).",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "node build.mjs && node serve.mjs"
+  },
+  "engines": { "node": ">=18" }
+}

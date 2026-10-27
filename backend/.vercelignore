@@ -1,0 +1,6 @@
+tests/
+tools/
+deploy/
+Dockerfile
+start.sh
+requirements-dev.txt

@@ -1,0 +1,51 @@
+# Sample nginx reverse proxy for the AVPCD API on an Alibaba Cloud ECS instance (Ubuntu/Debian layout).
+# Copy to /etc/nginx/conf.d/avpcd-api.conf and replace api.example.org. No secret belongs in this file.
+# The API listens on 127.0.0.1:8000 only (start.sh default, or docker run -p 127.0.0.1:8000:8000).
+
+# 10 requests per second per client address, bursts of 20 absorbed. Tune after looking at real traffic.
+limit_req_zone $binary_remote_addr zone=avpcd_api:10m rate=10r/s;
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name api.example.org;
+    # certbot's http-01 challenge and the redirect to https
+    location /.well-known/acme-challenge/ { root /var/www/certbot; }
+    location / { return 301 https://$host$request_uri; }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name api.example.org;
+
+    ssl_certificate     /etc/letsencrypt/live/api.example.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.example.org/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    # Only the API is exposed. Everything else is a 404.
+    location /api/ {
+        limit_req zone=avpcd_api burst=20 nodelay;
+        limit_except GET HEAD OPTIONS { deny all; }
+
+        proxy_pass http://127.0.0.1:8000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 30s;
+        proxy_buffering on;
+
+        # CORS is answered by the application (AVPCD_CORS_ORIGINS); do not add Access-Control-* headers here as well.
+    }
+
+    # Interactive docs: uncomment to expose them, or keep AVPCD_ENABLE_DOCS=false.
+    # location = /docs         { proxy_pass http://127.0.0.1:8000; }
+    # location = /openapi.json { proxy_pass http://127.0.0.1:8000; }
+
+    location / { return 404; }
+}

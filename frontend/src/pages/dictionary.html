@@ -1,0 +1,14 @@
+      <h1>Data dictionary</h1>
+      <p>Every column of the release tables. <em>Kind</em> says whether a column is recorded (copied from the curation workbook), derived, or added by the release. The same table is supplementary file <a href="assets/supplementary/S1_data_dictionary.csv">S1</a>.</p>
+      <div class="grid" style="margin:18px 0">
+        <label class="f">Table<select id="table"><option value="">all tables</option></select></label>
+        <label class="f">Filter by column name or description<input type="search" id="filter" autocomplete="off"></label>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite">Loading…</div>
+      <div class="table-scroll">
+        <table>
+          <caption class="sr-only">Columns of the release tables</caption>
+          <thead><tr><th scope="col">Table</th><th scope="col">Column</th><th scope="col">Kind</th><th scope="col">Description</th><th scope="col">Source</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>

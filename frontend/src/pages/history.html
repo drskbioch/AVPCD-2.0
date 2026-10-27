@@ -1,0 +1,16 @@
+      <h1>Version history</h1>
+      <h2>0.1-draft, 19 October 2026</h2>
+      <ul>
+        <li>First draft package: 1,731 headline-scope records from 553 papers, with evidence tier, novelty status, plant-provenance level and resolution status.</li>
+        <li>Compound resolution in two passes: PubChem name lookup, then PubChem synonyms, NCI CACTUS, COCONUT 2.0, LOTUS and the NPASS name table. Near matches are not accepted (ruling R002).</li>
+        <li>Rulings: R001 (an empty <code>is_derivative</code> is ruled unclear, pending adjudication) and R002 (no near matches).</li>
+        <li>Column <code>data_quality_flags</code> added to the records. The flags mark possible problems; no curated value was changed.</li>
+        <li>Accuracy benchmark: 150 records read by two independent experts, reported as a range (see About and S6). A unit conflict on three papers is flagged (<code>unit_conflict_benchmark</code>).</li>
+      </ul>
+      <h3>Not yet done</h3>
+      <ul>
+                <li>Audit of the compound-name and plant-name resolution.</li>
+        <li>Rulings on the origin (full text or abstract) of 47 records.</li>
+        <li>Confirmation of the licence for papers outside licence tier A.</li>
+      </ul>
+      <p>The same text, with the figures it rests on, is supplementary file <a href="assets/supplementary/S6_release_readme.md">S6</a>.</p>

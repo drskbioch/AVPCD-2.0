@@ -1,0 +1,41 @@
+      <section class="hero">
+        <div>
+          <h1>Antiviral potency of plant-derived compounds</h1>
+          <p>Curated IC50, EC50, IC90, EC90 and ED50 values of compounds from plants, tied to the virus, the assay and the paper they were read from.</p>
+          <div class="actions">
+            <a class="btn" href="search.html">Search the records</a>
+            <a class="btn alt" href="browse.html">Browse</a>
+          </div>
+        </div>
+        <div class="art" aria-hidden="true">
+          <img src="assets/art/plant-1.png" alt="">
+          <img src="assets/art/plant-2.png" alt="">
+          <img src="assets/art/plant-3.png" alt="">
+        </div>
+      </section>
+
+      <div class="notice">
+        <strong>This is a draft release.</strong> The records are curated, but their accuracy is known only as a range (benchmark of 150 records, two independent experts) and records outside that sample have not been checked by an independent person. Do not cite the numbers yet. <a href="about.html">What that means</a>.
+      </div>
+
+      <div class="stats" id="stats" aria-live="polite">
+        <div class="stat"><b data-stat="records">–</b><span>records</span></div>
+        <div class="stat"><b data-stat="papers">–</b><span>papers</span></div>
+        <div class="stat"><b data-stat="compounds">–</b><span>compounds</span></div>
+        <div class="stat"><b data-stat="records_with_structure">–</b><span>records with a structure</span></div>
+      </div>
+
+      <h2>Browse</h2>
+      <div class="cards">
+        <a class="card" href="browse.html?by=virus"><h3>By virus</h3><p>ICTV family and species, from the virus name as printed in the paper.</p></a>
+        <a class="card has-art" href="browse.html?by=plant"><h3>By plant</h3><p>Plant family and species of the source.</p><img src="assets/art/plant-4.png" alt=""></a>
+        <a class="card" href="browse.html?by=compound"><h3>By compound</h3><p>One entry per structure (InChIKey).</p></a>
+        <a class="card" href="browse.html?by=endpoint"><h3>By endpoint</h3><p>IC50, EC50, IC90, EC90, ED50.</p></a>
+      </div>
+
+      <h2>More</h2>
+      <div class="cards">
+        <a class="card" href="stats.html"><h3>Statistics</h3><p>Counts by evidence tier, assay, host, novelty and data quality flag.</p></a>
+        <a class="card" href="dictionary.html"><h3>Data dictionary</h3><p>Every column, and whether it was recorded, derived or added by the release.</p></a>
+        <a class="card" href="downloads.html"><h3>Downloads</h3><p>Supplementary files S1 to S6 and the release tables.</p></a>
+      </div>

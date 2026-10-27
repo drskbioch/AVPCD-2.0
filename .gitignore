@@ -1,0 +1,12 @@
+.env
+.env.local
+node_modules/
+frontend/dist/
+frontend/config.js
+__pycache__/
+*.pyc
+.pytest_cache/
+*.sqlite3
+*.sqlite
+*.db
+!backend/data/avpcd_v0.1.sqlite3

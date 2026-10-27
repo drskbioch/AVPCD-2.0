@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{title}}</title>
+  <meta name="description" content="{{description}}">
+  <link rel="stylesheet" href="css/style.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="draft-banner" role="note"><strong>DRAFT v0.1 - accuracy known only as a range - not for citation</strong></div>
+
+  <header class="site-header">
+    <div class="bar">
+      <a class="brand" href="index.html" aria-label="AVPCD home">
+        <span class="brand-name">AVPCD</span>
+        <span class="brand-tag">Antiviral potency of plant-derived compounds</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main">
+        {{nav}}
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Quick links">
+      <h2>Quick links</h2>
+      <ul>
+        <li><a href="browse.html?by=virus">Browse by virus</a></li>
+        <li><a href="browse.html?by=plant">Browse by plant</a></li>
+        <li><a href="browse.html?by=compound">Browse by compound</a></li>
+        <li><a href="browse.html?by=endpoint">Browse by endpoint</a></li>
+        <li><a href="search.html#advanced">Advanced search</a></li>
+        <li><a href="dictionary.html">Data dictionary</a></li>
+        <li><a href="downloads.html">Download</a></li>
+        <li><a href="citation.html">Citation</a></li>
+        <li><a href="history.html">Version history</a></li>
+      </ul>
+    </aside>
+    <main id="main" tabindex="-1">
+{{content}}
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <nav aria-label="More">
+      <a href="dictionary.html">Data dictionary</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="citation.html">Citation</a>
+      <a href="history.html">Version history</a>
+    </nav>
+    <p><strong>DRAFT v0.1 - accuracy known only as a range - not for citation.</strong> Every value is shown as recorded in release <span data-stat="meta.version">0.1-draft</span>; the evidence tier and data quality flags say where a value was read and what may need a second look.</p>
+  </footer>
+  <script type="module" src="js/nav.js"></script>
+  {{script}}
+</body>
+</html>
