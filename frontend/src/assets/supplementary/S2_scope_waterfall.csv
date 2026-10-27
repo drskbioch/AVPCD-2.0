@@ -1,9 +1,0 @@
-﻿step,exclusion,excluded,remaining
-start,all records in the frozen workbook,0,1988
-reference,role = reference,144,1844
-pct_inhibition,value_status = pct_inhibition,46,1798
-derivative,is_derivative = y,44,1754
-plant_virus,"virus_host plant, bacteriophage or other",21,1733
-endpoint,endpoint not IC50/EC50/IC90/EC90/ED50,0,1733
-duplicate,confirmed duplicate,2,1731
-ruling R001,"is_derivative empty ruled 'unclear': kept in scope, pending adjudication",0,1731

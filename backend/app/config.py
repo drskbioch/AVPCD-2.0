@@ -38,7 +38,7 @@ class Settings:
             cors_origins=origins,
             max_page_size=_int("AVPCD_MAX_PAGE_SIZE", 200),
             default_page_size=_int("AVPCD_DEFAULT_PAGE_SIZE", 50),
-            # On by default (records are CC BY 4.0); set AVPCD_ENABLE_DOWNLOAD=false to switch off.
-            enable_download=_flag("AVPCD_ENABLE_DOWNLOAD", True),
+            # Off by default: the site offers no downloads. Set AVPCD_ENABLE_DOWNLOAD=true to serve the release tables as CSV.
+            enable_download=_flag("AVPCD_ENABLE_DOWNLOAD", False),
             enable_docs=_flag("AVPCD_ENABLE_DOCS", True),
         )

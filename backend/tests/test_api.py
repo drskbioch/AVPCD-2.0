@@ -42,8 +42,7 @@ def test_health_and_stats(client, truth):
     assert s["records"] == truth.execute("SELECT COUNT(*) FROM records").fetchone()[0] == 1731
     assert sum(s["by_evidence_tier"].values()) == s["records"]
     assert s["by_evidence_tier"] == {"full_text": 858, "abstract": 838, "unclear": 35}
-    assert "150-record benchmark" in s["meta"]["independent_checks"] and "no record is marked as checked" in s["meta"]["independent_checks"]
-    assert "range" in s["meta"]["status"] and "not been measured" not in s["meta"]["status"]
+    assert set(s["meta"]) == {"version", "date", "licence"} and "CC BY 4.0" in s["meta"]["licence"]  # no internal metadata is exposed
     assert sum(s["by_endpoint"].values()) == s["records"]
 
 
@@ -124,7 +123,7 @@ def test_download_gate_and_content(client, truth):
     assert r.content.startswith(b"\xef\xbb\xbf")
     assert len(r.text.strip().splitlines()) == 1 + truth.execute("SELECT COUNT(*) FROM waterfall").fetchone()[0]
     assert client.get("/api/download", params={"table": "sqlite_master"}).status_code == 404
-    off = make_client(enable_download=False)
+    off = make_client()  # default: downloads disabled
     assert off.get("/api/download", params={"table": "records"}).status_code == 403
 
 

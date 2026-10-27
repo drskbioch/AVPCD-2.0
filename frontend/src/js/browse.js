@@ -70,7 +70,7 @@ document.getElementById("heading").textContent = `Browse by ${spec.title.toLower
 document.title = `Browse by ${spec.title.toLowerCase()} · AVPCD`;
 document.getElementById("hint").textContent = kind === "compound"
   ? "One entry per structure (InChIKey). Compounds without a resolved structure are not listed here; find them with the compound-name search."
-  : kind === "endpoint" ? "IC50, EC50, IC90, EC90 and ED50 are the only endpoints in the headline scope." : "Choose a name to see its records.";
+  : kind === "endpoint" ? "IC50, EC50, IC90, EC90 and ED50 are the only endpoints included." : "Choose a name to see its records.";
 filterInput.hidden = kind === "endpoint";
 filterInput.labels[0].hidden = kind === "endpoint";
 

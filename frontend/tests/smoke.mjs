@@ -28,11 +28,14 @@ function check(name, ok, detail = "") {
 
 // ---- part 1: static ----
 const pages = readdirSync(dist).filter((f) => f.endsWith(".html"));
-check("10 pages built", pages.length === 10, String(pages.length));
+check("8 pages built", pages.length === 8, String(pages.length));
+check("no downloads or version-history page", !pages.includes("downloads.html") && !pages.includes("history.html"));
+const INTERNAL = /\b(?:value_nM|evidence_tier|data_quality_flags|method_as_recorded|plant_provenance_level|is_derivative|unit_conflict_benchmark|compound_name|workbook_row|novelty_status|inchikey_|record_id)\b/;
 for (const f of pages) {
   const html = readFileSync(join(dist, f), "utf8");
   check(`${f}: no draft / not-ready wording`, !/draft|not for citation|not ready|not yet measured|nothing to cite/i.test(html));
   check(`${f}: Contact opens http://habdsk.org/ in a new tab`, /href="http:\/\/habdsk\.org\/" target="_blank" rel="noopener noreferrer"/.test(html));
+  check(`${f}: no internal field names in the page`, !INTERNAL.test(html.replace(/<script[\s\S]*?<\/script>/g, "")));
   check(`${f}: no unreplaced {{placeholder}}`, !/\{\{\w+\}\}/.test(html));
   check(`${f}: one h1`, (html.match(/<h1[ >]/g) || []).length === 1, String((html.match(/<h1[ >]/g) || []).length));
   const broken = [];
@@ -43,12 +46,7 @@ for (const f of pages) {
   }
   check(`${f}: local links and assets exist`, broken.length === 0, [...new Set(broken)].join(", "));
 }
-for (const f of ["S1_data_dictionary.csv", "S2_scope_waterfall.csv", "S3_scope_waterfall.md", "S4_reconciliation.md", "S5_near_matches_rejected.csv", "S6_release_readme.md"]) {
-  check(`supplementary ${f} present`, existsSync(join(dist, "assets", "supplementary", f)));
-}
 {
-  const about = readFileSync(join(dist, "about.html"), "utf8");
-  const s6 = readFileSync(join(dist, "assets", "supplementary", "S6_release_readme.md"), "utf8");
   check("no page quotes the benchmark accuracy figures (they belong to the manuscript)", !readdirSync(dist).filter((f) => f.endsWith(".html")).some((f) => /95\.7%|99\.2%|78\.6%|96\.9%/.test(readFileSync(join(dist, f), "utf8"))));
   check("no page still says accuracy was not measured", !readdirSync(dist).filter((f) => f.endsWith(".html")).some((f) => /accuracy (has|is) (not|unmeasured)|not yet measured|has not been measured/i.test(readFileSync(join(dist, f), "utf8"))));
 }
@@ -104,8 +102,10 @@ else {
 
   const first = (await (await get(`${API}/api/records?page_size=1`)).json()).results[0].record_id;
   dom = render(`record.html?id=${first}`);
-  check("record: title shows the id", dom.includes(`${first}:`));
-  check("record: every release column is shown (65 + 8 paper)", (dom.match(/<dt>/g) || []).length === 65 + 8, String((dom.match(/<dt>/g) || []).length));
+  check("record: page shows the record id", dom.includes(`Record ${first}`));
+  const dts = [...dom.matchAll(/<dt>([^<]*)<\/dt>/g)].map((m) => m[1]);
+  check("record: fields are shown with plain labels, never column names", dts.length >= 15 && dts.every((t) => !/_/.test(t) && t === t.charAt(0).toUpperCase() + t.slice(1)), dts.join(" | "));
+  check("record: no internal field name or raw code in the rendered page", !INTERNAL.test(dom.replace(/<script[\s\S]*?<\/script>/g, "")) && !/>(?:full_text|isolated_in_paper|newly_curated|unresolvable_)/.test(dom));
   dom = render("record.html?id=R9999");
   check("record: unknown id says so", dom.includes("does not exist"));
   dom = render("record.html?id=bad");
@@ -113,19 +113,14 @@ else {
 
   dom = render("stats.html");
   check("stats: six sections", (dom.match(/<div class="bars">/g) || []).length === 6, String((dom.match(/<div class="bars">/g) || []).length));
+  check("stats: buckets use plain labels", !/>(?:full_text|newly_curated|unresolvable_|possible_duplicate|unit_conflict_benchmark)/.test(dom));
   check("stats: tier count appears", dom.includes(`>${n(stats.by_evidence_tier.full_text)}</span>`));
 
   dom = render("dictionary.html");
-  const dictRows = (await (await get(`${API}/api/dictionary`)).json()).rows;
-  const recCols = dictRows.filter((r) => r.table === "records").length;
-  check("dictionary: records columns listed by default", dom.includes(`${n(recCols)} of ${n(dictRows.length)} columns.`));
+  const fieldCount = Number((dom.match(/(\d+) of \d+ fields\./) || [])[1]);
+  check("dictionary: fields listed with plain names", fieldCount > 30 && !/<th scope="row">[^<]*_[^<]*<\/th>/.test(dom), String(fieldCount));
 
-  dom = render("downloads.html");
-  const dl = await get(`${API}/api/download`);
-  check("downloads: matches the server setting", dl.status === 403 ? dom.includes("Not available yet") : dom.includes(".csv</a>"), `server status ${dl.status}`);
-  check("downloads: six supplementary links", (dom.match(/assets\/supplementary\/S[1-6]_/g) || []).length === 6);
-
-  for (const p of ["about.html", "citation.html", "history.html"]) {
+  for (const p of ["about.html", "citation.html"]) {
     dom = render(p);
     check(`${p}: renders and the footer is filled`, dom.includes(`data-stat="meta.version">${stats.meta.version}<`));
   }
@@ -136,7 +131,7 @@ else {
   check("mobile width: menu button present", mobile.includes('class="menu-toggle"'));
 
   const names = [["index.html", "home.png"], ["search.html?virus=Influenza", "search.png"], ["browse.html?by=virus", "browse-virus.png"], ["stats.html", "stats.png"],
-    ["record.html?id=" + first, "record.png"], ["about.html", "about.png"], ["downloads.html", "downloads.png"], ["dictionary.html", "dictionary.png"]];
+    ["record.html?id=" + first, "record.png"], ["about.html", "about.png"], ["citation.html", "citation.png"], ["dictionary.html", "dictionary.png"]];
   for (const [p, name] of names) shot(p, name);
   if (shots) {
     // headless Edge will not go narrower than about 500 px, so narrow screens are shown through iframes

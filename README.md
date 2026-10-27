@@ -6,7 +6,7 @@ Status: ready to deploy (see DEPLOY_VERCEL.md). There are no secrets in these fi
 
 | part | folder | goes to | what it is |
 |---|---|---|---|
-| frontend | `frontend/` | GitHub, then **Vercel** | static site (plain HTML and ES modules, no framework, no dependencies): home, browse (virus, plant, compound, endpoint), search, record page, statistics, data dictionary, downloads, about, citation, version history |
+| frontend | `frontend/` | GitHub, then **Vercel** | static site (plain HTML and ES modules, no framework, no dependencies): home, browse (virus, plant, compound, endpoint), search, record page, statistics, data dictionary, about, citation |
 | backend | `backend/` | the **Alibaba server** | FastAPI app serving the release SQLite file read-only as JSON, run by gunicorn/uvicorn behind nginx |
 
 The browser loads the site from Vercel and then calls the API on the Alibaba server directly. The only link between the two is one address and one allow-list:
@@ -31,11 +31,9 @@ avpcd_web/
     deploy/            nginx.conf.sample, avpcd-api.service.sample, DEPLOY_ALIBABA.md
     Dockerfile  start.sh  requirements.txt  requirements-dev.txt  .env.example
   frontend/
-    src/               layout.html (banner, navbar, sidebar, footer), pages/*.html (10 pages), js/*.js, css/style.css,
-                       assets/art (plant cut-outs), assets/supplementary (S1-S6)
+    src/               layout.html (navbar, sidebar, footer), pages/*.html (8 pages), js/*.js (labels.js holds every plain-language field name), css/style.css, assets/art (plant cut-outs)
     build.mjs          renders pages/ into layout.html, copies css/js/assets to dist/, writes dist/config.js from AVPCD_API_URL
-    tools/sync_supplementary.mjs   copies S1-S6 from the release folder (run after a new release)
-    tests/smoke.mjs    static checks plus every page rendered in headless Edge against the live API (94 checks)
+    tests/smoke.mjs    static checks plus every page rendered in headless Edge against the live API 
     screenshots/       pages at 1280 px and 390 px wide (written by smoke.mjs --shots screenshots)
     serve.mjs          local preview server (development only)
     vercel.json  package.json  .env.example
@@ -47,7 +45,7 @@ Backend (from `avpcd_web/backend/`, Python 3.12 or newer):
 
 ```sh
 pip install -r requirements-dev.txt
-# the default database path is the release folder of this repository; set AVPCD_DB_PATH to use another file
+# the default database is backend/data/avpcd_v0.1.sqlite3; set AVPCD_DB_PATH to use another file
 AVPCD_CORS_ORIGINS=http://127.0.0.1:5173 python -m uvicorn app.main:app --port 8000
 python -m pytest -q          # 20 tests against the real database
 ```
@@ -67,7 +65,7 @@ node tests/smoke.mjs                  # with the backend and serve.mjs running; 
 | `GET /api/records` | filtered, sorted, paginated records (compound, inchikey, plant, virus, endpoint, value range, tier, flags) |
 | `GET /api/record/{id}` | one record (all 65 columns) plus its paper row |
 | `GET /api/stats` | counts for the release (tiers, endpoints, flags, ...) |
-| `GET /api/download` | CSV of a release table; on by default (CC BY 4.0); `AVPCD_ENABLE_DOWNLOAD=false` switches it off |
+| `GET /api/download` | CSV of a release table; off by default (`AVPCD_ENABLE_DOWNLOAD=true` switches it on); the site itself offers no downloads |
 | `GET /api/facets/{virus\|plant\|compound\|endpoint}` | record counts behind the browse pages |
 | `GET /api/dictionary` | the release data dictionary |
 | `GET /api/health` | liveness check |
@@ -81,7 +79,6 @@ Backend (`backend/.env.example`): `AVPCD_DB_PATH`, `AVPCD_CORS_ORIGINS`, `AVPCD_
 ## Deploying
 
 This folder is its own repository (GitHub, private) with two Vercel projects: `backend/` (FastAPI, serverless, database bundled in `backend/data/`) and `frontend/` (static). Steps, environment variables and the visibility warning: **`DEPLOY_VERCEL.md`**. The Alibaba route (`backend/deploy/DEPLOY_ALIBABA.md`) remains an alternative for the API.
-- Before either goes public: confirm the licence of the release and the licence status of the text processing for papers outside licence tier A (open question in the release README), and decide whether to enable downloads.
 
 ## Not included
 

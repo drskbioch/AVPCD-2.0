@@ -15,15 +15,13 @@ export const PAGES = [
   ["browse.html", "Browse", "browse", "browse", "Browse the records by virus, plant, compound or endpoint."],
   ["search.html", "Search", "search", "search", "Search the records by compound, plant, virus, endpoint, value and more."],
   ["stats.html", "Statistics", "stats", "stats", "Counts for the current release."],
-  ["downloads.html", "Downloads", "downloads", "downloads", "Release tables and supplementary files."],
   ["about.html", "About", "about", null, "What the records are and how they were made."],
   ["record.html", "Record", "browse", "record", "One record of the release."],
-  ["dictionary.html", "Data dictionary", null, "dictionary", "Every column of the release records."],
+  ["dictionary.html", "Data dictionary", null, "dictionary", "What each field of a record means."],
   ["citation.html", "Citation", null, null, "How to cite the release."],
-  ["history.html", "Version history", null, null, "Changes between releases."],
 ];
 const NAV = [["home", "Home", "index.html"], ["browse", "Browse", "browse.html"], ["search", "Search", "search.html"],
-  ["stats", "Statistics", "stats.html"], ["downloads", "Downloads", "downloads.html"], ["about", "About", "about.html"]];
+  ["stats", "Statistics", "stats.html"], ["about", "About", "about.html"]];
 const CONTACT_URL = "http://habdsk.org/"; // as requested; the site also answers on https://habdsk.org/ (http redirects there)
 
 function fromDotenv() {

@@ -1,27 +1,25 @@
-import { getJSON, el, fmtInt, setStatus } from "./api.js";
+import { el, fmtInt, setStatus } from "./api.js";
+import { FIELDS, GROUPS } from "./labels.js";
 
 const statusBox = document.getElementById("status");
 const body = document.getElementById("rows");
-const tableSelect = document.getElementById("table");
+const groupSelect = document.getElementById("group");
 const filterInput = document.getElementById("filter");
-let rows = [];
 
 function render() {
   const q = filterInput.value.trim().toLowerCase();
-  const t = tableSelect.value;
-  const hits = rows.filter((r) => (!t || r.table === t) && (!q || `${r.column} ${r.description}`.toLowerCase().includes(q)));
-  body.replaceChildren(...hits.map((r) => el("tr", {},
-    el("td", {}, r.table), el("td", {}, el("code", {}, r.column)), el("td", {}, r.kind), el("td", {}, r.description), el("td", {}, r.source))));
-  setStatus(statusBox, `${fmtInt(hits.length)} of ${fmtInt(rows.length)} columns.`);
+  const g = groupSelect.value;
+  const hits = FIELDS.filter(([, label, group, desc]) => (!g || group === g) && (!q || `${label} ${desc}`.toLowerCase().includes(q)));
+  body.replaceChildren(...hits.map(([, label, group, desc, added]) => el("tr", {},
+    el("th", { scope: "row" }, label),
+    el("td", {}, group),
+    el("td", {}, desc),
+    el("td", {}, added ? el("span", { class: "added" }, "Added by AVPCD") : el("span", { class: "dim" }, "From the paper"))))
+  );
+  setStatus(statusBox, `${fmtInt(hits.length)} of ${fmtInt(FIELDS.length)} fields.`);
 }
 
-try {
-  ({ rows } = await getJSON("/api/dictionary"));
-  for (const t of [...new Set(rows.map((r) => r.table))]) tableSelect.append(el("option", { value: t }, t));
-  tableSelect.value = rows.some((r) => r.table === "records") ? "records" : "";
-  tableSelect.addEventListener("change", render);
-  filterInput.addEventListener("input", render);
-  render();
-} catch (err) {
-  setStatus(statusBox, `Could not load the data dictionary (${err.message}).`, true);
-}
+for (const g of GROUPS) groupSelect.append(el("option", { value: g }, g));
+groupSelect.addEventListener("change", render);
+filterInput.addEventListener("input", render);
+render();

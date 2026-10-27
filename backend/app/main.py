@@ -33,8 +33,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(
         title="AVPCD API",
         version=release.meta.get("version", "unknown"),
-        description="Read-only API over AVPCD release " + release.meta.get("version", "?") + ". "
-                    + release.meta.get("status", ""),
+        description="Read-only API over AVPCD release " + release.meta.get("version", "?") + ".",
         docs_url="/docs" if settings.enable_docs else None,
         redoc_url=None,
         openapi_url="/openapi.json" if settings.enable_docs else None,
@@ -132,7 +131,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 return con.execute(sql).fetchone()[0]
 
             stats_cache.update(key=key, value={
-                "meta": release.meta,
+                "meta": {k: release.meta[k] for k in ("version", "date", "licence") if k in release.meta},
                 "records": q("SELECT COUNT(*) FROM records"),
                 "papers": q("SELECT COUNT(*) FROM papers"),
                 "compounds": q("SELECT COUNT(*) FROM compounds") if "compounds" in release.tables else None,
@@ -188,7 +187,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def download(table: str | None = Query(None), con=Depends(db)):
         """CSV of one release table (UTF-8 with BOM, like the release files). Disabled unless AVPCD_ENABLE_DOWNLOAD=true."""
         if not settings.enable_download:
-            raise HTTPException(403, "downloads are disabled on this server (switched off by the operator)")
+            raise HTTPException(403, "downloads are disabled on this server (not offered by this server)")
         if table is None:
             return {"tables": release.tables, "format": "csv", "usage": "/api/download?table=records"}
         if table not in release.tables:  # whitelist: the table name is interpolated below

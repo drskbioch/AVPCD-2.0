@@ -1,4 +1,5 @@
-import { getJSON, getStats, el, fmtInt, fmtNanomolar, label, setStatus } from "./api.js";
+import { getJSON, getStats, el, fmtInt, fmtNanomolar, setStatus } from "./api.js";
+import { prettyValue, bucketLabel, flagLabel, flagHint } from "./labels.js";
 
 const form = document.getElementById("filters");
 const statusBox = document.getElementById("status");
@@ -15,8 +16,8 @@ const COLUMNS = [
   ["Endpoint", "endpoint", "endpoint"],
   ["Value as printed", "value_raw", null],
   ["Value (nM)", "value_nM", "value_nM"],
-  ["Evidence", "evidence_tier", "evidence_tier"],
-  ["Flags", "data_quality_flags", null],
+  ["Where read", "evidence_tier", "evidence_tier"],
+  ["Data quality flags", "data_quality_flags", null],
 ];
 
 function currentParams() {
@@ -62,13 +63,14 @@ function cell(column, row) {
   const v = row[column] ?? "";
   const td = el("td");
   if (column === "record_id") td.append(el("a", { href: `record.html?id=${encodeURIComponent(v)}` }, v));
-  else if (column === "value_nM") { td.className = "num"; td.textContent = fmtNanomolar(v); }
+  else if (column === "value_nM") { td.className = "num"; td.textContent = fmtNanomolar(v) || "–"; }
+  else if (column === "plant_species" && v === "unspecified") { td.className = "dim"; td.textContent = "Not specified"; }
   else if (column === "value_raw") { td.className = "num"; td.textContent = [row.relation !== "=" ? row.relation : "", v, row.unit_raw].filter(Boolean).join(" "); }
-  else if (column === "evidence_tier") td.append(el("span", { class: `tag ${v}` }, label(v)));
+  else if (column === "evidence_tier") td.append(el("span", { class: `tag ${v}` }, prettyValue("evidence_tier", v)));
   else if (column === "data_quality_flags") {
     const names = v.split(";").filter(Boolean);
-    if (names.length) td.append(...names.map((n) => el("span", { class: "flag" }, n)));
-    else td.append(el("span", { class: "noflag" }, "none"));
+    if (names.length) td.append(...names.map((n) => el("span", { class: "flag", title: flagHint(n) }, flagLabel(n))));
+    else td.append(el("span", { class: "noflag" }, "–"));
   } else td.textContent = v;
   return td;
 }
@@ -96,18 +98,18 @@ async function search() {
   }
 }
 
-function checkboxGroup(boxId, name, values) {
+function checkboxGroup(boxId, name, values, field) {
   const box = document.getElementById(boxId);
-  for (const v of values) box.append(el("label", {}, el("input", { type: "checkbox", name, value: v }), label(v)));
+  for (const v of values) box.append(el("label", {}, el("input", { type: "checkbox", name, value: v }), bucketLabel(field, v)));
 }
 
 async function init() {
   try {
     const stats = await getStats();
-    checkboxGroup("endpoint-box", "endpoint", Object.keys(stats.by_endpoint).filter(Boolean));
-    checkboxGroup("tier-box", "tier", Object.keys(stats.by_evidence_tier).filter(Boolean));
+    checkboxGroup("endpoint-box", "endpoint", Object.keys(stats.by_endpoint).filter(Boolean), "endpoint");
+    checkboxGroup("tier-box", "tier", Object.keys(stats.by_evidence_tier).filter(Boolean), "evidence_tier");
     for (const name of Object.keys(stats.by_data_quality_flag)) {
-      form.elements.flag.append(el("option", { value: name }, name === "none" ? "none (no flag)" : name));
+      form.elements.flag.append(el("option", { value: name }, bucketLabel("data_quality_flags", name)));
     }
   } catch (err) {
     setStatus(statusBox, `Could not reach the data service (${err.message}).`, true);

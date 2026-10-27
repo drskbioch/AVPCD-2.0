@@ -7,7 +7,7 @@ Two Vercel projects from one GitHub repository. The browser loads the site from 
 | `avpcd-api` (backend) | `backend` | Other (Vercel detects Python from `requirements.txt` and `api/index.py`) | `AVPCD_CORS_ORIGINS` = the frontend's production URL, no trailing slash |
 | `avpcd-web` (frontend) | `frontend` | Other (`vercel.json` sets build command `node build.mjs` and output `dist`) | `AVPCD_API_URL` = the backend's production URL (https) |
 
-The release database `backend/data/avpcd_v0.1.sqlite3` (2.3 MB) is committed to this repository and bundled into the function (`includeFiles` in `backend/vercel.json`). It is opened read-only. Downloads (`/api/download`) are on; set `AVPCD_ENABLE_DOWNLOAD=false` to switch them off.
+The release database `backend/data/avpcd_v0.1.sqlite3` (2.3 MB) is committed to this repository and bundled into the function (`includeFiles` in `backend/vercel.json`). It is opened read-only. The site offers no downloads; `/api/download` is off unless `AVPCD_ENABLE_DOWNLOAD=true` is set.
 
 ## One-time steps
 
