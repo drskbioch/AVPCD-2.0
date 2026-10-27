@@ -49,7 +49,7 @@ for (const f of ["S1_data_dictionary.csv", "S2_scope_waterfall.csv", "S3_scope_w
 {
   const about = readFileSync(join(dist, "about.html"), "utf8");
   const s6 = readFileSync(join(dist, "assets", "supplementary", "S6_release_readme.md"), "utf8");
-  check("about: the benchmark range typed on the page equals the S6 README", ["95.7%", "99.2%", "78.6%", "96.9%"].every((n) => about.includes(n) && s6.includes(n)));
+  check("no page quotes the benchmark accuracy figures (they belong to the manuscript)", !readdirSync(dist).filter((f) => f.endsWith(".html")).some((f) => /95\.7%|99\.2%|78\.6%|96\.9%/.test(readFileSync(join(dist, f), "utf8"))));
   check("no page still says accuracy was not measured", !readdirSync(dist).filter((f) => f.endsWith(".html")).some((f) => /accuracy (has|is) (not|unmeasured)|not yet measured|has not been measured/i.test(readFileSync(join(dist, f), "utf8"))));
 }
 check("robots.txt allows indexing", /Allow: \/\s*$/m.test(readFileSync(join(dist, "robots.txt"), "utf8")));
