@@ -175,14 +175,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             facet_cache[kind] = {"kind": kind, "items": items}
         return facet_cache[kind]
 
-    @app.get("/api/dictionary")
-    def dictionary(con=Depends(db)):
-        """The release's data_dictionary table, as stored."""
-        if "data_dictionary" not in release.tables:
-            raise HTTPException(404, "this release has no data_dictionary table")
-        cols = release.columns["data_dictionary"]
-        return {"rows": [dict(r) for r in con.execute(f"SELECT {', '.join(chr(34) + c + chr(34) for c in cols)} FROM data_dictionary")]}
-
     @app.get("/api/download")
     def download(table: str | None = Query(None), con=Depends(db)):
         """CSV of one release table (UTF-8 with BOM, like the release files). Disabled unless AVPCD_ENABLE_DOWNLOAD=true."""

@@ -180,10 +180,6 @@ Disabled unless the server sets `AVPCD_ENABLE_DOWNLOAD=true` (the licence plan o
 | `compound` | `inchikey`, `compound_name`, `records` | one item per non-empty `inchikey`; `compound_name` is the most frequent `compound_name` of that key (ties: alphabetical); the release has no compound class column, so there is no browse by class |
 | `endpoint` | `endpoint`, `records` | one item per `endpoint` value |
 
-### `GET /api/dictionary`
-
-`{"rows": [...]}`: the release table `data_dictionary` as stored. Each row has the strings `table`, `column`, `kind`, `description`, `source`.
-
 ### `GET /api/health`
 
 `{"status": "ok", "release_version": "...", "records": "..."}` (both values from the `meta` table, as strings). For load balancers; not cached.

@@ -137,9 +137,7 @@ def test_facets_and_dictionary(client, truth):
     assert len(comp) == truth.execute("SELECT COUNT(DISTINCT inchikey) FROM records WHERE inchikey<>''").fetchone()[0]
     assert set(comp[0]) == {"inchikey", "compound_name", "records"}
     assert client.get("/api/facets/class").status_code == 404
-    d = client.get("/api/dictionary").json()["rows"]
-    assert len(d) == truth.execute("SELECT COUNT(*) FROM data_dictionary").fetchone()[0] == 105
-    assert list(d[0]) == ["table", "column", "kind", "description", "source"]
+    assert client.get("/api/dictionary").status_code == 404  # the internal dictionary is not served
     fam = client.get("/api/records", params={"virus": "Retroviridae"}).json()["total"]
     assert fam == truth.execute("SELECT COUNT(*) FROM records WHERE ictv_family='Retroviridae'").fetchone()[0]
 

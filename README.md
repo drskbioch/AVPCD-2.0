@@ -6,7 +6,7 @@ Status: ready to deploy (see DEPLOY_VERCEL.md). There are no secrets in these fi
 
 | part | folder | goes to | what it is |
 |---|---|---|---|
-| frontend | `frontend/` | GitHub, then **Vercel** | static site (plain HTML and ES modules, no framework, no dependencies): home, browse (virus, plant, compound, endpoint), search, record page, statistics, data dictionary, about, citation |
+| frontend | `frontend/` | GitHub, then **Vercel** | static site (plain HTML and ES modules, no framework, no dependencies): home, browse (virus, plant, compound, endpoint), search, record page, statistics, about, citation |
 | backend | `backend/` | the **Alibaba server** | FastAPI app serving the release SQLite file read-only as JSON, run by gunicorn/uvicorn behind nginx |
 
 The browser loads the site from Vercel and then calls the API on the Alibaba server directly. The only link between the two is one address and one allow-list:
@@ -67,7 +67,6 @@ node tests/smoke.mjs                  # with the backend and serve.mjs running; 
 | `GET /api/stats` | counts for the release (tiers, endpoints, flags, ...) |
 | `GET /api/download` | CSV of a release table; off by default (`AVPCD_ENABLE_DOWNLOAD=true` switches it on); the site itself offers no downloads |
 | `GET /api/facets/{virus\|plant\|compound\|endpoint}` | record counts behind the browse pages |
-| `GET /api/dictionary` | the release data dictionary |
 | `GET /api/health` | liveness check |
 
 Parameters, response shapes and every column are in `DATA_CONTRACT.md`. After a new release file, regenerate it with `python -I backend/tools/make_data_contract.py`; a test fails if the contract and the database disagree.
