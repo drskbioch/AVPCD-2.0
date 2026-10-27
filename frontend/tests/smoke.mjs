@@ -28,8 +28,8 @@ function check(name, ok, detail = "") {
 
 // ---- part 1: static ----
 const pages = readdirSync(dist).filter((f) => f.endsWith(".html"));
-check("7 pages built", pages.length === 7, String(pages.length));
-check("no downloads, version-history or dictionary page", !["downloads.html", "history.html", "dictionary.html"].some((f) => pages.includes(f)));
+check("6 pages built", pages.length === 6, String(pages.length));
+check("no downloads, version-history, dictionary or citation page", !["downloads.html", "history.html", "dictionary.html", "citation.html"].some((f) => pages.includes(f)));
 const INTERNAL = /\b(?:value_nM|evidence_tier|data_quality_flags|method_as_recorded|plant_provenance_level|is_derivative|unit_conflict_benchmark|compound_name|workbook_row|novelty_status|inchikey_|record_id)\b/;
 for (const f of pages) {
   const html = readFileSync(join(dist, f), "utf8");
@@ -116,7 +116,7 @@ else {
   check("stats: buckets use plain labels", !/>(?:full_text|newly_curated|unresolvable_|possible_duplicate|unit_conflict_benchmark)/.test(dom));
   check("stats: tier count appears", dom.includes(`>${n(stats.by_evidence_tier.full_text)}</span>`));
 
-  for (const p of ["about.html", "citation.html"]) {
+  for (const p of ["about.html"]) {
     dom = render(p);
     check(`${p}: renders and the footer is filled`, dom.includes(`data-stat="meta.version">${stats.meta.version}<`));
   }
@@ -127,7 +127,7 @@ else {
   check("mobile width: menu button present", mobile.includes('class="menu-toggle"'));
 
   const names = [["index.html", "home.png"], ["search.html?virus=Influenza", "search.png"], ["browse.html?by=virus", "browse-virus.png"], ["stats.html", "stats.png"],
-    ["record.html?id=" + first, "record.png"], ["about.html", "about.png"], ["citation.html", "citation.png"]];
+    ["record.html?id=" + first, "record.png"], ["about.html", "about.png"]];
   for (const [p, name] of names) shot(p, name);
   if (shots) {
     // headless Edge will not go narrower than about 500 px, so narrow screens are shown through iframes

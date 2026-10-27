@@ -194,7 +194,6 @@ code { background: var(--surface); padding: 1px 6px; border-radius: 4px; font-si
 .lead { font-size: 1.12rem; color: var(--text); max-width: 62ch; margin: 0 0 1.4em; }
 .sub { color: var(--muted); margin: -.3em 0 12px; }
 .crumb { margin: 0 0 10px; font-size: .92rem; }
-pre.cite { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--primary); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 18px; overflow-x: auto; white-space: pre-wrap; font: .9rem/1.55 ui-monospace, "Cascadia Mono", Consolas, monospace; max-width: 80ch; }
 .added { display: inline-block; margin-left: 8px; padding: 0 8px; border-radius: 999px; background: var(--surface-2); color: var(--deep); font-size: .72rem; font-weight: 600; white-space: nowrap; vertical-align: 1px; }
 .lead .added { margin: 0 2px; }
 table.guide th[scope="row"] { position: static; background: transparent; white-space: nowrap; font-weight: 600; color: var(--deep); }

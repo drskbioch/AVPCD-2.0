@@ -17,7 +17,6 @@ export const PAGES = [
   ["stats.html", "Statistics", "stats", "stats", "Counts for the current release."],
   ["about.html", "About", "about", null, "What the records are and how they were made."],
   ["record.html", "Record", "browse", "record", "One record of the release."],
-  ["citation.html", "Citation", null, null, "How to cite the release."],
 ];
 const NAV = [["home", "Home", "index.html"], ["browse", "Browse", "browse.html"], ["search", "Search", "search.html"],
   ["stats", "Statistics", "stats.html"], ["about", "About", "about.html"]];
