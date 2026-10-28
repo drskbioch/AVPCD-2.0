@@ -1,31 +1,15 @@
-      <section class="hero">
-        <div>
-          <h1>Antiviral potency of plant-derived compounds</h1>
-          <p>Curated IC50, EC50, IC90, EC90 and ED50 values of compounds from plants, tied to the virus, the assay and the paper they were read from.</p>
-          <div class="actions">
-            <a class="btn" href="search.html">Search the records</a>
-            <a class="btn alt" href="browse.html">Browse</a>
-            <a class="btn alt" href="stats.html">Statistics</a>
-          </div>
-        </div>
-        <div class="art" aria-hidden="true">
-          <img src="assets/art/plant-1.png" alt="">
-          <img src="assets/art/plant-2.png" alt="">
-          <img src="assets/art/plant-3.png" alt="">
-        </div>
-      </section>
-
-<div class="stats" id="stats" aria-live="polite">
-        <div class="stat"><b data-stat="records">–</b><span>records</span></div>
-        <div class="stat"><b data-stat="papers">–</b><span>papers</span></div>
-        <div class="stat"><b data-stat="compounds">–</b><span>compounds</span></div>
-        <div class="stat"><b data-stat="records_with_structure">–</b><span>records with a structure</span></div>
+      <h1><span class="r">A</span>nti<span class="r">V</span>iral <span class="g">P</span>hyto<span class="g">C</span>hemical <span class="p">D</span>atabase (<span class="r">AV</span><span class="g">PC</span><span class="p">D</span>) 2.0</h1>
+      <p class="justify"><span class="r">A</span>nti<span class="r">V</span>iral <span class="g">P</span>hyto<span class="g">C</span>hemical <span class="p">D</span>atabase (<span class="r">AV</span><span class="g">PC</span><span class="p">D</span>) 2.0 brings together the antiviral potency of compounds from plants, taken from published work. Viral diseases remain among the most critical public health problems of the world, and effective medicines and vaccines are still lacking for many of them. Plant-derived compounds are an important source of leads for antiviral drugs, and many valuable computational resources about medicinal plants have been built on their medicinal properties. <span class="r">AV</span><span class="g">PC</span><span class="p">D</span> 2.0 adds what such resources often lack: the measured potency itself, tied to the compound, the plant it comes from, the virus, the assay and the paper it was read from.</p>
+      <p class="justify">Each record is one potency value (IC50, EC50, IC90, EC90 or ED50) of one plant-derived compound against one virus in one assay, copied from one paper. A record holds the compound name as printed in the paper together with a structure matched by database lookup (InChIKey and SMILES), the plant species and family, the virus with its ICTV species and family, the assay type and cell line, the value as printed and in nanomolar, and a link to the paper. Reference drugs, semisynthetic derivatives and plant-virus assays are left out. The compounds can be browsed by virus, plant, compound and endpoint, and searched by any of these together with a potency range.</p>
+      <p class="justify"><span class="r">AV</span><span class="g">PC</span><span class="p">D</span> 2.0 is the successor of <a href="https://avpcd.habdsk.org/" target="_blank" rel="noopener noreferrer">AVPCD 1.0</a>. The records were extracted by four curators with AI-tool assistance and reviewed by them; this description comes from the curators. The records are released under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> licence. Questions and corrections are welcome on the <a href="contact.html">Contact Us / FAQ</a> page.</p>
+      <div class="actions">
+        <a class="btn" href="search.html">Search the records</a>
+        <a class="btn line" href="browse.html">Browse</a>
+        <a class="btn line" href="tutorial.html">How to use</a>
       </div>
-
-      <h2>Browse</h2>
-      <div class="cards">
-        <a class="card" href="browse.html?by=virus"><h3>By virus</h3><p>ICTV family and species, from the virus name as printed in the paper.</p></a>
-        <a class="card has-art" href="browse.html?by=plant"><h3>By plant</h3><p>Plant family and species of the source.</p><img src="assets/art/plant-4.png" alt=""></a>
-        <a class="card" href="browse.html?by=compound"><h3>By compound</h3><p>One entry per structure (InChIKey).</p></a>
-        <a class="card" href="browse.html?by=endpoint"><h3>By endpoint</h3><p>IC50, EC50, IC90, EC90, ED50.</p></a>
+      <div class="gallery" aria-hidden="true">
+        <img src="assets/art/plant-1.png" alt="">
+        <img src="assets/art/plant-2.png" alt="">
+        <img src="assets/art/plant-3.png" alt="">
+        <img src="assets/art/plant-4.png" alt="">
       </div>

@@ -28,13 +28,16 @@ function check(name, ok, detail = "") {
 
 // ---- part 1: static ----
 const pages = readdirSync(dist).filter((f) => f.endsWith(".html"));
-check("6 pages built", pages.length === 6, String(pages.length));
-check("no downloads, version-history, dictionary or citation page", !["downloads.html", "history.html", "dictionary.html", "citation.html"].some((f) => pages.includes(f)));
+check("8 pages built", pages.length === 8, String(pages.length));
+check("no downloads, version-history, dictionary or citation page", !["downloads.html", "history.html", "dictionary.html", "citation.html", "about.html"].some((f) => pages.includes(f)));
 const INTERNAL = /\b(?:value_nM|evidence_tier|data_quality_flags|method_as_recorded|plant_provenance_level|is_derivative|unit_conflict_benchmark|compound_name|workbook_row|novelty_status|inchikey_|record_id)\b/;
 for (const f of pages) {
   const html = readFileSync(join(dist, f), "utf8");
   check(`${f}: no draft / not-ready wording`, !/draft|not for citation|not ready|not yet measured|nothing to cite/i.test(html));
-  check(`${f}: Contact opens http://habdsk.org/ in a new tab`, /href="http:\/\/habdsk\.org\/" target="_blank" rel="noopener noreferrer"/.test(html));
+  check(`${f}: the 2.0 banner is shown`, html.includes("assets/banner.jpg"));
+  check(`${f}: navigation has the seven v1 items`, ["Home", "Search", "Browse", "How To Use", "Statistics", "Useful Links", "Contact Us / FAQ"].every((t) => html.includes(`>${t}</a>`)));
+  check(`${f}: no mention of abstract or full text`, !/abstract|full[ _-]?text/i.test(html));
+  check(`${f}: S Khan Lab link opens http://habdsk.org/ in a new tab`, /href="http:\/\/habdsk\.org\/" target="_blank" rel="noopener noreferrer"/.test(html));
   check(`${f}: no internal field names in the page`, !INTERNAL.test(html.replace(/<script[\s\S]*?<\/script>/g, "")));
   check(`${f}: no unreplaced {{placeholder}}`, !/\{\{\w+\}\}/.test(html));
   check(`${f}: one h1`, (html.match(/<h1[ >]/g) || []).length === 1, String((html.match(/<h1[ >]/g) || []).length));
@@ -68,9 +71,8 @@ const n = (x) => Number(x).toLocaleString("en-GB");
 if (!EDGE) { check("Edge found", false, "set EDGE=path to msedge.exe"); }
 else {
   let dom = render("index.html");
-  check("index: record count from the API", dom.includes(`<b data-stat="records">${n(stats.records)}</b>`));
-  check("index: no placeholder dash left in stats", !/data-stat="records_with_structure">–/.test(dom));
-  check("footer: release version from the API", dom.includes(`data-stat="meta.version">${stats.meta.version}<`));
+  check("index: no counts or statistics tiles", !/data-stat|class="stat"/.test(dom) && !dom.includes(n(stats.records)));
+  check("index: the AVPCD acronym is coloured like v1", /<span class="r">A<\/span>nti<span class="r">V<\/span>iral/.test(dom));
 
   dom = render("search.html");
   const rows = (dom.match(/<tr><td><a href="record\.html\?id=R\d{4}"/g) || []).length;
@@ -106,28 +108,32 @@ else {
   const dts = [...dom.matchAll(/<dt>([^<]*)<\/dt>/g)].map((m) => m[1]);
   check("record: fields are shown with plain labels, never column names", dts.length >= 15 && dts.every((t) => !/_/.test(t) && t === t.charAt(0).toUpperCase() + t.slice(1)), dts.join(" | "));
   check("record: no internal field name or raw code in the rendered page", !INTERNAL.test(dom.replace(/<script[\s\S]*?<\/script>/g, "")) && !/>(?:full_text|isolated_in_paper|newly_curated|unresolvable_)/.test(dom));
+  check("record: no abstract or full-text wording", !/abstract|full[ _-]?text/i.test(dom));
+  check("record: no Cross-references or Notes and flags card", !/Cross-references|Notes and flags/.test(dom));
+  const unitFlag = (await (await get(`${API}/api/records?flag=unit_conflict_benchmark&page_size=1`)).json()).results[0].record_id;
+  dom = render(`record.html?id=${unitFlag}`);
+  check("record: a unit-conflict record shows the Unit to check warning", dom.includes("Unit to check"));
   dom = render("record.html?id=R9999");
   check("record: unknown id says so", dom.includes("does not exist"));
   dom = render("record.html?id=bad");
   check("record: bad id says so", dom.includes("No record id in the address"));
 
   dom = render("stats.html");
-  check("stats: six sections", (dom.match(/<div class="bars">/g) || []).length === 6, String((dom.match(/<div class="bars">/g) || []).length));
+  check("stats: five sections", (dom.match(/<div class="bars">/g) || []).length === 5, String((dom.match(/<div class="bars">/g) || []).length));
   check("stats: buckets use plain labels", !/>(?:full_text|newly_curated|unresolvable_|possible_duplicate|unit_conflict_benchmark)/.test(dom));
-  check("stats: tier count appears", dom.includes(`>${n(stats.by_evidence_tier.full_text)}</span>`));
+  check("stats: no tier or flag sections", !/Where the value was read|Data quality flags|Novelty/.test(dom));
+  check("stats: cell-based count appears", dom.includes(`>${n(stats.by_assay_type["cell-based"])}</span>`));
 
-  for (const p of ["about.html"]) {
+  for (const [p, h] of [["tutorial.html", "How To Use"], ["links.html", "Useful Links"], ["contact.html", "Contact Us / FAQ"]]) {
     dom = render(p);
-    check(`${p}: renders and the footer is filled`, dom.includes(`data-stat="meta.version">${stats.meta.version}<`));
+    check(`${p}: renders its heading`, dom.includes(`<h1>${h}</h1>`));
   }
-  dom = render("about.html");
-  check("about: counts filled from the API", dom.includes(`data-stat="records">${n(stats.records)}<`) && !/data-stat="[^"]+">–</.test(dom));
 
   const mobile = render("search.html", ["--window-size=390,900"]);
   check("mobile width: menu button present", mobile.includes('class="menu-toggle"'));
 
   const names = [["index.html", "home.png"], ["search.html?virus=Influenza", "search.png"], ["browse.html?by=virus", "browse-virus.png"], ["stats.html", "stats.png"],
-    ["record.html?id=" + first, "record.png"], ["about.html", "about.png"]];
+    ["record.html?id=" + first, "record.png"], ["tutorial.html", "tutorial.png"], ["contact.html", "contact.png"], ["links.html", "links.png"]];
   for (const [p, name] of names) shot(p, name);
   if (shots) {
     // headless Edge will not go narrower than about 500 px, so narrow screens are shown through iframes

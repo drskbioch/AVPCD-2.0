@@ -11,16 +11,17 @@ const dist = join(root, "dist");
 
 // file, title, nav key (null = no navbar item), page script (js/<name>.js or null), description
 export const PAGES = [
-  ["index.html", "Home", "home", null, "Antiviral potency records of plant-derived compounds (CC BY 4.0)."],
+  ["index.html", "Home", "home", null, "AntiViral PhytoChemical Database 2.0: antiviral potency of compounds from plants."],
+  ["search.html", "Search", "search", "search", "Search the records by compound, plant, virus, endpoint and value."],
   ["browse.html", "Browse", "browse", "browse", "Browse the records by virus, plant, compound or endpoint."],
-  ["search.html", "Search", "search", "search", "Search the records by compound, plant, virus, endpoint, value and more."],
-  ["stats.html", "Statistics", "stats", "stats", "Counts for the current release."],
-  ["about.html", "About", "about", null, "What the records are and how they were made."],
-  ["record.html", "Record", "browse", "record", "One record of the release."],
+  ["tutorial.html", "How To Use", "tutorial", null, "How to search, browse and read a record."],
+  ["stats.html", "Statistics", "stats", "stats", "How the records are spread over endpoints, assays, hosts and families."],
+  ["links.html", "Useful Links", "links", null, "Related databases and resources."],
+  ["contact.html", "Contact Us / FAQ", "contact", null, "Contact details and frequently asked questions."],
+  ["record.html", "Record", "search", "record", "One record of the database."],
 ];
-const NAV = [["home", "Home", "index.html"], ["browse", "Browse", "browse.html"], ["search", "Search", "search.html"],
-  ["stats", "Statistics", "stats.html"], ["about", "About", "about.html"]];
-const CONTACT_URL = "http://habdsk.org/"; // as requested; the site also answers on https://habdsk.org/ (http redirects there)
+const NAV = [["home", "Home", "index.html"], ["search", "Search", "search.html"], ["browse", "Browse", "browse.html"], ["tutorial", "How To Use", "tutorial.html"],
+  ["stats", "Statistics", "stats.html"], ["links", "Useful Links", "links.html"], ["contact", "Contact Us / FAQ", "contact.html"]];
 
 function fromDotenv() {
   const file = join(root, ".env");
@@ -53,8 +54,7 @@ const escapeAttr = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").repla
 
 function render(layout, [file, title, nav, script, description]) {
   const content = readFileSync(join(src, "pages", file), "utf8");
-  const navHtml = NAV.map(([key, label, href]) => `<a href="${href}"${key === nav ? ' aria-current="page"' : ""}>${label}</a>`).join("\n        ")
-    + `\n        <a class="ext" href="${CONTACT_URL}" target="_blank" rel="noopener noreferrer">Contact<span class="sr-only"> (opens habdsk.org in a new tab)</span></a>`;
+  const navHtml = NAV.map(([key, label, href]) => `<a href="${href}"${key === nav ? ' aria-current="page"' : ""}>${label}</a>`).join("\n        ");
   return layout
     .replace("{{title}}", file === "index.html" ? "AVPCD" : `${title} · AVPCD`)
     .replace("{{description}}", escapeAttr(description))

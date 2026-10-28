@@ -11,38 +11,75 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="bar">
-      <a class="brand" href="index.html" aria-label="AVPCD home">
-        <span class="brand-name">AVPCD</span>
-        <span class="brand-tag">Antiviral potency of plant-derived compounds</span>
-      </a>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="banner" href="index.html"><img src="assets/banner.jpg" width="1983" height="541" alt="AVPCD 2.0: AntiViral PhytoChemical Database"></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Main">
         {{nav}}
       </nav>
-    </div>
-  </header>
+    </header>
 
-  <div class="layout">
-    <aside class="sidebar" aria-label="Quick links">
-      <h2>Quick links</h2>
-      <ul>
-        <li><a href="browse.html?by=virus">Browse by virus</a></li>
-        <li><a href="browse.html?by=plant">Browse by plant</a></li>
-        <li><a href="browse.html?by=compound">Browse by compound</a></li>
-        <li><a href="browse.html?by=endpoint">Browse by endpoint</a></li>
-        <li><a href="search.html#advanced">Advanced search</a></li>
-      </ul>
-    </aside>
-    <main id="main" tabindex="-1">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Side panels">
+        <section class="side-card">
+          <h2>Supervised by</h2>
+          <div class="side-body"><strong>Dr. Shahid Ullah</strong></div>
+        </section>
+        <section class="side-card">
+          <h2>Our Services</h2>
+          <div class="side-body">
+            <p class="side-sub">Phyto Databases</p>
+            <ul class="svc">
+              <li><a class="here" href="index.html">AVPCD 2.0 <small>Current</small></a></li>
+              <li><a href="https://avpcd.habdsk.org/" target="_blank" rel="noopener noreferrer">AVPCD 1.0 <small>Published</small></a></li>
+              <li><a href="https://hadb.habdsk.org/" target="_blank" rel="noopener noreferrer">HADB</a></li>
+              <li><a href="https://www.mpdb.habdsk.org/" target="_blank" rel="noopener noreferrer">MPDB</a></li>
+              <li><a href="https://www.ptdb.habdsk.org/" target="_blank" rel="noopener noreferrer">PTDB</a></li>
+              <li><a href="https://www.pbed.habdsk.org/" target="_blank" rel="noopener noreferrer">BEDB</a></li>
+            </ul>
+          </div>
+        </section>
+        <section class="side-card">
+          <h2>Browse</h2>
+          <ul class="side-links">
+            <li><a href="browse.html?by=virus">By virus</a></li>
+            <li><a href="browse.html?by=plant">By plant</a></li>
+            <li><a href="browse.html?by=compound">By compound</a></li>
+            <li><a href="browse.html?by=endpoint">By endpoint</a></li>
+            <li><a href="search.html#advanced">Advanced search</a></li>
+          </ul>
+        </section>
+      </aside>
+      <main id="main" tabindex="-1">
+        <div class="panel-body">
 {{content}}
-    </main>
-  </div>
+        </div>
+      </main>
+    </div>
 
-  <footer class="site-footer">
-    <p>AVPCD · release <span data-stat="meta.version">0.1</span> · records licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></p>
-  </footer>
+    <footer class="site-footer">
+      <div>
+        <a class="f-brand" href="http://habdsk.org/" target="_blank" rel="noopener noreferrer"><span class="a">S</span> <span class="b">Khan</span> <span class="c">Lab</span><span class="sr-only"> (opens habdsk.org in a new tab)</span></a>
+        <p><a href="index.html">Home</a></p>
+        <p>2010 - 2026 Designed by Dr. Shahid Ullah &amp; Team</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul class="f-list">
+          <li><a href="mailto:drskbioch@gmail.com">drskbioch@gmail.com</a></li>
+          <li>+1 424 393 8809</li>
+          <li><a href="contact.html">Contact Us / FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Our Aims</h3>
+        <p>We aim to uncover the molecular mechanisms of important proteins in life sciences, provide comprehensive open data sharing for the global scientific community, and contribute to societal betterment.</p>
+        <p><a href="https://www.facebook.com/skhan.lab.3/timeline" target="_blank" rel="noopener noreferrer">Facebook</a></p>
+      </div>
+      <p class="f-note">AVPCD 2.0 · records licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></p>
+    </footer>
+  </div>
   <script type="module" src="js/nav.js"></script>
   {{script}}
 </body>

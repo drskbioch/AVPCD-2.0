@@ -6,7 +6,7 @@ Status: ready to deploy (see DEPLOY_VERCEL.md). There are no secrets in these fi
 
 | part | folder | goes to | what it is |
 |---|---|---|---|
-| frontend | `frontend/` | GitHub, then **Vercel** | static site (plain HTML and ES modules, no framework, no dependencies): home, browse (virus, plant, compound, endpoint), search, record page, statistics, about |
+| frontend | `frontend/` | GitHub, then **Vercel** | static site (plain HTML and ES modules, no framework, no dependencies): the AVPCD 1.0 look with the 2.0 banner: home, search, browse (virus, plant, compound, endpoint), how to use, statistics, useful links, contact / FAQ, and the record page |
 | backend | `backend/` | the **Alibaba server** | FastAPI app serving the release SQLite file read-only as JSON, run by gunicorn/uvicorn behind nginx |
 
 The browser loads the site from Vercel and then calls the API on the Alibaba server directly. The only link between the two is one address and one allow-list:

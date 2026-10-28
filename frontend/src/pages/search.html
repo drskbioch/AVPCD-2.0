@@ -12,11 +12,9 @@
             <label class="f">InChIKey (full, or first 14 characters)<input type="text" name="inchikey" maxlength="27" autocomplete="off" spellcheck="false"></label>
             <label class="f">Value from (nM)<input type="number" name="value_min" min="0" step="any"></label>
             <label class="f">Value to (nM)<input type="number" name="value_max" min="0" step="any"></label>
-            <label class="f">Data quality flag<select name="flag"><option value="">Any</option></select></label>
             <label class="f">Rows per page<select name="page_size"><option>25</option><option selected>50</option><option>100</option><option>200</option></select></label>
           </div>
-          <fieldset class="f" style="margin-top:14px"><legend>Where the value was read</legend><span id="tier-box"></span></fieldset>
-          <p class="hint">The nM filters leave out records whose value could not be converted to nM (mass units without a molecular weight).</p>
+          <p class="hint">The nM limits leave out records whose value could not be converted to nM (mass units without a molecular weight).</p>
         </details>
         <div class="actions">
           <button type="submit" class="btn">Search</button>

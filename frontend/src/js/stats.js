@@ -1,33 +1,38 @@
-import { getStats, el, fmtInt, setStatus } from "./api.js";
+import { getStats, getJSON, el, fmtInt, setStatus } from "./api.js";
 import { bucketLabel } from "./labels.js";
 
-// stats field -> [heading, bar colour class, explanation]
-const SECTIONS = {
-  "by_evidence_tier": ["Where the value was read", "", "Full text: read in the full paper. Abstract: read from the abstract only. Unclear: not yet ruled on."],
-  "by_endpoint": ["Endpoint", "teal", "Only antiviral potency endpoints are included."],
-  "by_assay_type": ["Assay type", "amber", "Cell-based assays and target-based systems (enzyme, replicon, pseudovirus) are different things; read them apart."],
-  "by_virus_host": ["Virus host", "slate", "Plant-virus assays are not included, so the viruses here infect humans or animals."],
-  "by_novelty_status": ["Novelty against NPASS and ChEMBL", "magenta", "Newly curated is a lower bound; the unresolvable groups cannot be tested (no structure, no ICTV species or no comparable value)."],
-  "by_data_quality_flag": ["Data quality flags", "slate", "A flag marks something to re-read. It does not mean the value is wrong, and no flag does not mean it was checked. A record with two flags counts under both."],
-};
+const TOP = 10;
 
+// counts: name -> number of records; field: which field the names belong to (for plain labels)
 function bars(counts, total, colour, field) {
   const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
   const max = Math.max(...entries.map(([, n]) => n), 1);
   return el("div", { class: "bars" }, entries.map(([name, n]) => el("div", { class: "bar-row" },
-    el("span", {}, bucketLabel(field, name)),
+    el("span", {}, field ? bucketLabel(field, name) : name),
     el("span", { class: "track" }, el("span", { class: `fill ${colour}`, style: `--w:${(100 * n / max).toFixed(1)}%` })),
     el("span", { class: "n", title: `${(100 * n / total).toFixed(1)}% of records` }, fmtInt(n)))));
 }
 
+// facet items -> top families by record count
+function byFamily(items, key, none) {
+  const sums = {};
+  for (const item of items) sums[item[key] || none] = (sums[item[key] || none] ?? 0) + item.records;
+  return Object.fromEntries(Object.entries(sums).sort((a, b) => b[1] - a[1]).slice(0, TOP));
+}
+
 const statusBox = document.getElementById("status");
 try {
-  const s = await getStats();
-  document.getElementById("tiles").replaceChildren(...[[s.records, "records"], [s.papers, "papers"], [s.compounds, "compounds"], [s.records_with_structure, "records with a structure"]]
-    .map(([n, text]) => el("div", { class: "stat" }, el("b", {}, fmtInt(n)), el("span", {}, text))));
-  document.getElementById("sections").replaceChildren(...Object.entries(SECTIONS).flatMap(([field, [heading, colour, note]]) => [
-    el("h2", {}, heading), el("p", {}, note), bars(s[field], s.records, colour, field.replace(/^by_/, ""))]));
-  setStatus(statusBox, `Release ${s.meta.version}, ${s.meta.date}.`);
+  const [s, virus, plant] = await Promise.all([getStats(), getJSON("/api/facets/virus"), getJSON("/api/facets/plant")]);
+  const sections = [
+    ["Endpoint", "Only antiviral potency endpoints are included.", s.by_endpoint, "", "teal"],
+    ["Assay type", "Cell-based assays and target-based systems (enzyme, replicon, pseudovirus) are different things; read them apart.", s.by_assay_type, "assay_type", "amber"],
+    ["Virus host", "Plant-virus assays are not included, so the viruses here infect humans or animals.", s.by_virus_host, "virus_host", "slate"],
+    [`Virus families (top ${TOP})`, "Records by ICTV family of the virus.", byFamily(virus.items, "ictv_family", "Family not matched"), "", "blue"],
+    [`Plant families (top ${TOP})`, "Records by family of the source plant.", byFamily(plant.items, "plant_family", "Family not matched"), "", "green"],
+  ];
+  document.getElementById("sections").replaceChildren(...sections.flatMap(([heading, note, counts, field, colour]) => [
+    el("h2", {}, heading), el("p", {}, note), bars(counts, s.records, colour === "blue" ? "" : colour, field)]));
+  setStatus(statusBox, "");
 } catch (err) {
   setStatus(statusBox, `Could not load the statistics (${err.message}).`, true);
 }

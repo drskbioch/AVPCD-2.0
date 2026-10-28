@@ -5,7 +5,7 @@ const form = document.getElementById("filters");
 const statusBox = document.getElementById("status");
 const rowsBox = document.getElementById("rows");
 const state = { page: 1, sort: "record_id", order: "asc" };
-const ADVANCED = ["inchikey", "value_min", "value_max", "tier", "flag", "page_size"];
+const ADVANCED = ["inchikey", "value_min", "value_max", "page_size"];
 
 // Columns shown in the table: [label, release column, sort key or null]
 const COLUMNS = [
@@ -100,10 +100,6 @@ async function init() {
   try {
     const stats = await getStats();
     checkboxGroup("endpoint-box", "endpoint", Object.keys(stats.by_endpoint).filter(Boolean), "endpoint");
-    checkboxGroup("tier-box", "tier", Object.keys(stats.by_evidence_tier).filter(Boolean), "evidence_tier");
-    for (const name of Object.keys(stats.by_data_quality_flag)) {
-      form.elements.flag.append(el("option", { value: name }, bucketLabel("data_quality_flags", name)));
-    }
   } catch (err) {
     setStatus(statusBox, `Could not reach the data service (${err.message}).`, true);
   }
